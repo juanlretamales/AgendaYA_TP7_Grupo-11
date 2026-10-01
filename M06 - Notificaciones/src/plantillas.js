@@ -1,3 +1,29 @@
+const CHAR_LIMIT = 2000;
+
+// --- Plantillas por defecto ---
+const DEFAULT_TEMPLATES = {
+  confirmacion: 'Estimado/a [Nombre_Invitado], le confirmamos su turno para el día [Fecha] a las [Hora]. Atentamente, Dr. [Nombre_Prof].',
+  cancelacion:  'Estimado/a [Nombre_Invitado], le informamos que su turno programado para el día [Fecha] a las [Hora] ha sido cancelado. Atentamente, Dr. [Nombre_Prof].',
+  recordatorio: 'Estimado/a [Nombre_Invitado], le recordamos su turno para el día [Fecha] a las [Hora]. Atentamente, Dr. [Nombre_Prof].',
+};
+
+// Lógica pura compartida por la interfaz y los tests unitarios.
+function obtenerPlantillaPredeterminada(tipo) {
+  return Object.prototype.hasOwnProperty.call(DEFAULT_TEMPLATES, tipo)
+    ? DEFAULT_TEMPLATES[tipo]
+    : '';
+}
+
+function generarTextoContador(texto) {
+  return `${texto.length} / ${CHAR_LIMIT} caracteres`;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { obtenerPlantillaPredeterminada, generarTextoContador };
+}
+
+// Inicializar la interfaz únicamente en el navegador.
+if (typeof document !== 'undefined') {
 
 // =============================================================
 // M06 – Navegación entre vistas (solo si existe la nav)
@@ -30,15 +56,6 @@ if (navBookingBtn && navTemplatesBtn) {
 // M06 – Plantillas de Email (US_005 / M06-R04F)
 //       Solo se inicializa si los elementos existen en la página
 // =============================================================
-const CHAR_LIMIT = 2000;
-
-// --- Plantillas por defecto ---
-const DEFAULT_TEMPLATES = {
-  confirmacion: 'Estimado/a [Nombre_Invitado], le confirmamos su turno para el día [Fecha] a las [Hora]. Atentamente, Dr. [Nombre_Prof].',
-  cancelacion:  'Estimado/a [Nombre_Invitado], le informamos que su turno programado para el día [Fecha] a las [Hora] ha sido cancelado. Atentamente, Dr. [Nombre_Prof].',
-  recordatorio: 'Estimado/a [Nombre_Invitado], le recordamos su turno para el día [Fecha] a las [Hora]. Atentamente, Dr. [Nombre_Prof].',
-};
-
 // Pestaña activa ('confirmacion' | 'cancelacion' | 'recordatorio')
 let activeTab = 'confirmacion';
 
@@ -60,9 +77,9 @@ function loadTemplate(type) {
   // Evictar entradas obsoletas que todavía mencionen un servicio específico
   if (stored && stored.includes('Ortodoncia')) {
     localStorage.removeItem(lsKey(type));
-    return DEFAULT_TEMPLATES[type] ?? '';
+    return obtenerPlantillaPredeterminada(type);
   }
-  return stored ?? DEFAULT_TEMPLATES[type] ?? '';
+  return stored ?? obtenerPlantillaPredeterminada(type);
 }
 
 function saveTemplate(type, text) {
@@ -73,7 +90,7 @@ function saveTemplate(type, text) {
 function updateCharCounter() {
   if (!templateTextarea || !charCounter) return;
   const len = templateTextarea.value.length;
-  charCounter.textContent = `${len} / ${CHAR_LIMIT} caracteres`;
+  charCounter.textContent = generarTextoContador(templateTextarea.value);
   charCounter.classList.toggle('counter-warning', len > CHAR_LIMIT * 0.9);
   charCounter.classList.toggle('counter-error',   len >= CHAR_LIMIT);
 }
@@ -173,7 +190,7 @@ btnSave?.addEventListener('click', () => {
 // --- Restablecer (solo la pestaña activa) ---
 btnReset?.addEventListener('click', () => {
   if (!templateTextarea || !templateError || !successModal) return;
-  templateTextarea.value      = DEFAULT_TEMPLATES[activeTab] ?? '';
+  templateTextarea.value      = obtenerPlantillaPredeterminada(activeTab);
   templateError.style.display = 'none';
   successModal.style.display  = 'none';
   updateCharCounter();
@@ -187,3 +204,4 @@ btnCloseModal?.addEventListener('click', () => {
 // --- Inicialización: cargar la pestaña confirmacion al arrancar ---
 loadTab(activeTab);
 
+}
