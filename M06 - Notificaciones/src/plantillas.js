@@ -18,8 +18,47 @@ function generarTextoContador(texto) {
   return `${texto.length} / ${CHAR_LIMIT} caracteres`;
 }
 
+/**
+ * Valida que la plantilla no supere el límite de caracteres y contenga
+ * obligatoriamente las variables [Fecha] y [Hora].
+ * @param {string} texto
+ * @returns {{ valida: boolean, error?: string }}
+ */
+function validarPlantilla(texto) {
+  if (typeof texto !== 'string') {
+    return { valida: false, error: 'La plantilla debe ser un texto.' };
+  }
+  if (texto.length > CHAR_LIMIT) {
+    return { valida: false, error: `La plantilla supera el límite de ${CHAR_LIMIT} caracteres.` };
+  }
+  if (!texto.includes('[Fecha]')) {
+    return { valida: false, error: 'La plantilla debe incluir obligatoriamente la variable [Fecha].' };
+  }
+  if (!texto.includes('[Hora]')) {
+    return { valida: false, error: 'La plantilla debe incluir obligatoriamente la variable [Hora].' };
+  }
+  return { valida: true };
+}
+
+/**
+ * Reemplaza cada ocurrencia de [Clave] en la plantilla por el valor
+ * correspondiente del objeto `datos`. Si un valor es null/undefined/vacío,
+ * deja la etiqueta intacta (no lanza excepción).
+ * @param {string} plantilla
+ * @param {Object} datos  e.g. { Nombre_Invitado, Fecha, Hora, Nombre_Prof }
+ * @returns {string}
+ */
+function renderizarPlantilla(plantilla, datos) {
+  if (typeof plantilla !== 'string') return '';
+  const datosSeguro = datos != null && typeof datos === 'object' ? datos : {};
+  return plantilla.replace(/\[([^\]]+)\]/g, (_match, clave) => {
+    const valor = datosSeguro[clave];
+    return (valor !== null && valor !== undefined && valor !== '') ? valor : `[${clave}]`;
+  });
+}
+
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { obtenerPlantillaPredeterminada, generarTextoContador };
+  module.exports = { obtenerPlantillaPredeterminada, generarTextoContador, validarPlantilla, renderizarPlantilla };
 }
 
 // Inicializar la interfaz únicamente en el navegador.
