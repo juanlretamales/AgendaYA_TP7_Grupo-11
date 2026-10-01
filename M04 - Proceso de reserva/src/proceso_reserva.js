@@ -98,6 +98,7 @@ if (form) {
     const continueToTime = document.querySelector('[data-cy="continue-to-time"]');
     const continueToDetails = document.querySelector('[data-cy="continue-to-details"]');
     const successDiv = document.querySelector('[data-cy="booking-confirmation"]');
+    const mailLink = document.querySelector('[data-cy="btn-ver-mail-confirmacion"]');
     const notificationsLog = document.getElementById('notifications-log');
 
     function leerReservas() {
@@ -249,6 +250,11 @@ if (form) {
 
         reservas.push({ tipoEvento, fecha, hora, nombre, email, estado: 'PENDIENTE' });
         localStorage.setItem(reservasKey, JSON.stringify(reservas));
+        const referencia = new URLSearchParams({
+            indice: String(reservas.length - 1), tipoEvento, fecha, hora, nombre, email
+        });
+        mailLink.href = `../../M06 - Notificaciones/frontend/confirmar_reserva.html?${referencia}`;
+        mailLink.hidden = false;
         mostrarPaso('success');
         successDiv.hidden = false;
         successDiv.textContent = `¡Reserva Pendiente de Confirmación! Solicitud registrada para ${nombre} (${email}) el ${fecha} a las ${hora} para ${tipoEvento}.`;
