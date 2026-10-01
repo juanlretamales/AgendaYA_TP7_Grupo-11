@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgendaYA - Confirmación de Reserva</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="confirmation-mail-page">
+    <div class="mobile-frame">
+        <div class="mail-header">
+            <div class="mail-subject">Confirmación de Reserva</div>
+            <div>De: avisosagendaya@agendaya.com</div>
+            <div>Para: <span data-cy="destinatario-reserva"></span></div>
+        </div>
+        <div class="brand-banner">Agenda<span>YA</span></div>
+        <div class="mail-body">
+            <h2>¡Hola <span data-cy="nombre-reserva"></span>! Tu reserva para <span data-cy="evento-reserva"></span> está lista.</h2>
+            <div class="booking-details">
+                <strong>Fecha:</strong> <span data-cy="fecha-reserva"></span><br>
+                <strong>Hora:</strong> <span data-cy="hora-reserva"></span>
+            </div>
+            <button type="button" data-cy="btn-confirmar-reserva" class="btn-confirmar" disabled>Confirmar reserva</button>
+            <div class="cancel-note">
+                Si necesitas cancelar, <button type="button" data-cy="btn-cancelar-deshabilitado" class="cancel-disabled" disabled>hacé clic aquí</button>.
+            </div>
+            <div data-cy="confirmacion-reserva-exitosa" class="success-box" hidden>Reserva confirmada correctamente</div>
+            <div data-cy="error-confirmacion" class="error-box" hidden></div>
+        </div>
+    </div>
+    <script src="../src/confirmar_reserva.js"></script>
+</body>
+</html>

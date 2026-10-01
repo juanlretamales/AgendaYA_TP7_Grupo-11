@@ -38,6 +38,17 @@ body {
     display: none !important;
 }
 
+.mail-link {
+    display: block;
+    margin: 15px 24px;
+    padding: 10px;
+    border-radius: 4px;
+    background: #0066cc;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
 label {
     display: block;
     margin-top: 10px;
