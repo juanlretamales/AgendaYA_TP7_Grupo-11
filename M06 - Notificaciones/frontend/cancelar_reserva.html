@@ -1,262 +1,260 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>AgendaYA - Notificación de Reserva</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #e9eef2;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    /* Marco estilo teléfono para email */
-    .mobile-frame {
-      width: 360px;
-      background: #ffffff;
-      border-radius: 28px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      overflow: hidden;
-      border: 8px solid #111;
-    }
-    .mail-header {
-      padding: 16px 20px 8px;
-      font-size: 13px;
-      color: #666;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    .mail-subject {
-      font-size: 18px;
-      font-weight: bold;
-      color: #222;
-      margin-bottom: 6px;
-    }
-    .brand-banner {
-      background-color: #e2f6fd;
-      padding: 24px 20px;
-      font-size: 32px;
-      font-weight: 800;
-      color: #1a202c;
-    }
-    .brand-banner span {
-      color: #3b82f6;
-    }
-    .mail-body {
-      background-color: #ededed;
-      padding: 24px 20px;
-      text-align: center;
-    }
-    .mail-body h2 {
-      font-size: 22px;
-      line-height: 1.3;
-      margin: 0 0 16px;
-      color: #111;
-    }
-    .booking-details {
-      text-align: left;
-      font-size: 15px;
-      color: #333;
-      margin: 16px 0 24px;
-      line-height: 1.5;
-    }
-    .btn-confirmar {
-      background-color: #3b82f6;
-      color: white;
-      border: 1px solid #1d4ed8;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: not-allowed;
-      opacity: 0.85;
-    }
-    .cancel-note {
-      margin-top: 28px;
-      font-size: 13px;
-      color: #888;
-    }
-    .cancel-note a {
-      color: #ef4444;
-      text-decoration: underline;
-      cursor: pointer;
-      font-weight: 600;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <title>AgendaYA - Notificación de Reserva</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                background-color: #e9eef2;
+                margin: 0;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+            }
+            /* Marco estilo teléfono para email */
+            .mobile-frame {
+                width: 360px;
+                background: #ffffff;
+                border-radius: 28px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+                border: 8px solid #111;
+            }
+            .mail-header {
+                padding: 16px 20px 8px;
+                font-size: 13px;
+                color: #666;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .mail-subject {
+                font-size: 18px;
+                font-weight: bold;
+                color: #222;
+                margin-bottom: 6px;
+            }
+            .brand-banner {
+                background-color: #e2f6fd;
+                padding: 24px 20px;
+                font-size: 32px;
+                font-weight: 800;
+                color: #1a202c;
+            }
+            .brand-banner span {
+                color: #3b82f6;
+            }
+            .mail-body {
+                background-color: #ededed;
+                padding: 24px 20px;
+                text-align: center;
+            }
+            .mail-body h2 {
+                font-size: 22px;
+                line-height: 1.3;
+                margin: 0 0 16px;
+                color: #111;
+            }
+            .booking-details {
+                text-align: left;
+                font-size: 15px;
+                color: #333;
+                margin: 16px 0 24px;
+                line-height: 1.5;
+            }
+            .btn-confirmar {
+                background-color: #3b82f6;
+                color: white;
+                border: 1px solid #1d4ed8;
+                padding: 10px 20px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: not-allowed;
+                opacity: 0.85;
+            }
+            .cancel-note {
+                margin-top: 28px;
+                font-size: 13px;
+                color: #888;
+            }
+            .cancel-note a {
+                color: #ef4444;
+                text-decoration: underline;
+                cursor: pointer;
+                font-weight: 600;
+            }
 
-    /* Vista de Cancelación */
-    #cancel-view {
-      display: none;
-      padding: 24px 20px;
-      background: #ffffff;
-    }
-    #cancel-view h3 {
-      margin-top: 0;
-      color: #b91c1c;
-    }
-    .cancel-card-info {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 10px;
-      font-size: 13px;
-      margin-bottom: 14px;
-      text-align: left;
-    }
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      text-align: left;
-    }
-    input {
-      width: 100%;
-      padding: 9px;
-      box-sizing: border-box;
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    .btn-cancelar-final {
-      width: 100%;
-      background-color: #dc2626;
-      color: white;
-      border: none;
-      padding: 11px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-cancelar-final:hover {
-      background-color: #b91c1c;
-    }
-    .error-box {
-      color: #b91c1c;
-      background-color: #fef2f2;
-      border: 1px solid #fecaca;
-      border-radius: 4px;
-      padding: 8px;
-      font-size: 12px;
-      margin-top: 10px;
-      display: none;
-      text-align: left;
-    }
-    .success-box {
-      color: #15803d;
-      background-color: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 4px;
-      padding: 10px;
-      font-size: 13px;
-      margin-top: 12px;
-      display: none;
-      text-align: left;
-    }
-  </style>
-</head>
-<body>
+            /* Vista de Cancelación */
+            #cancel-view {
+                display: none;
+                padding: 24px 20px;
+                background: #ffffff;
+            }
+            #cancel-view h3 {
+                margin-top: 0;
+                color: #b91c1c;
+            }
+            .cancel-card-info {
+                background-color: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                padding: 10px;
+                font-size: 13px;
+                margin-bottom: 14px;
+                text-align: left;
+            }
+            label {
+                display: block;
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 4px;
+                text-align: left;
+            }
+            input {
+                width: 100%;
+                padding: 9px;
+                box-sizing: border-box;
+                border: 1px solid #cbd5e1;
+                border-radius: 4px;
+                margin-bottom: 10px;
+                font-size: 14px;
+            }
+            .btn-cancelar-final {
+                width: 100%;
+                background-color: #dc2626;
+                color: white;
+                border: none;
+                padding: 11px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            .btn-cancelar-final:hover {
+                background-color: #b91c1c;
+            }
+            .error-box {
+                color: #b91c1c;
+                background-color: #fef2f2;
+                border: 1px solid #fecaca;
+                border-radius: 4px;
+                padding: 8px;
+                font-size: 12px;
+                margin-top: 10px;
+                display: none;
+                text-align: left;
+            }
+            .success-box {
+                color: #15803d;
+                background-color: #f0fdf4;
+                border: 1px solid #bbf7d0;
+                border-radius: 4px;
+                padding: 10px;
+                font-size: 13px;
+                margin-top: 12px;
+                display: none;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="mobile-frame">
+            <!-- 1. VISTA: EMAIL DE CONFIRMACIÓN RECIBIDO -->
+            <div id="email-view">
+                <div class="mail-header">
+                    <div class="mail-subject">Confirmación de Reserva</div>
+                    <div>De: avisosagendaya@agendaya.com</div>
+                </div>
 
-  <div class="mobile-frame">
-    <!-- 1. VISTA: EMAIL DE CONFIRMACIÓN RECIBIDO -->
-    <div id="email-view">
-      <div class="mail-header">
-        <div class="mail-subject">Confirmación de Reserva</div>
-        <div>De: avisosagendaya@agendaya.com</div>
-      </div>
+                <div class="brand-banner">Agenda<span>YA</span></div>
 
-      <div class="brand-banner">
-        Agenda<span>YA</span>
-      </div>
+                <div class="mail-body">
+                    <h2>¡Hola Juan! Tu reserva para ortodoncia con Moni está lista.</h2>
 
-      <div class="mail-body">
-        <h2>¡Hola Juan! Tu reserva para ortodoncia con Moni está lista.</h2>
+                    <div class="booking-details">
+                        <strong>Fecha:</strong> 20/04/26<br />
+                        <strong>Hora:</strong> 9:00
+                    </div>
 
-        <div class="booking-details">
-          <strong>Fecha:</strong> 20/04/26<br />
-          <strong>Hora:</strong> 9:00
+                    <button type="button" class="btn-confirmar" disabled>Confirmar reserva</button>
+
+                    <div class="cancel-note">
+                        Si necesitas cancelar, hacé clic
+                        <a id="link-cancelar" data-cy="link-cancelar-reserva">aquí</a>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. VISTA: FORMULARIO DE CANCELACIÓN (SE ABRE AL TOCAR EL LINK) -->
+            <div id="cancel-view">
+                <h3>Cancelar Reserva</h3>
+                <div class="cancel-card-info" data-cy="info-reserva">
+                    <strong>Reserva:</strong> RES-105<br />
+                    <strong>Paciente:</strong> Juan<br />
+                    <strong>Turno:</strong> 20/04/26 - 9:00 hs
+                </div>
+
+                <form id="form-cancel" onsubmit="return false;">
+                    <label for="input-email">Confirme su correo para procesar la baja:</label>
+                    <input type="email" id="input-email" data-cy="email-input" placeholder="ej: juan@gmail.com" />
+
+                    <button
+                        type="submit"
+                        id="btn-submit-cancel"
+                        data-cy="btn-confirmar-baja"
+                        class="btn-cancelar-final"
+                    >
+                        Confirmar Cancelación
+                    </button>
+                </form>
+
+                <!-- Mensajes de respuesta con data-cy -->
+                <div id="msg-error" data-cy="error-mensaje" class="error-box"></div>
+                <div id="msg-success" data-cy="confirmacion-cancelacion" class="success-box"></div>
+            </div>
         </div>
 
-        <button type="button" class="btn-confirmar" disabled>Confirmar reserva</button>
+        <script>
+            const emailView = document.getElementById("email-view");
+            const cancelView = document.getElementById("cancel-view");
+            const linkCancelar = document.getElementById("link-cancelar");
+            const formCancel = document.getElementById("form-cancel");
+            const inputEmail = document.getElementById("input-email");
+            const msgError = document.getElementById("msg-error");
+            const msgSuccess = document.getElementById("msg-success");
 
-        <div class="cancel-note">
-          Si necesitas cancelar, hacé clic 
-          <a id="link-cancelar" data-cy="link-cancelar-reserva">aquí</a>.
-        </div>
-      </div>
-    </div>
+            // Al hacer clic en "aquí", pasamos a la pantalla de cancelación
+            linkCancelar.addEventListener("click", () => {
+                emailView.style.display = "none";
+                cancelView.style.display = "block";
+            });
 
-    <!-- 2. VISTA: FORMULARIO DE CANCELACIÓN (SE ABRE AL TOCAR EL LINK) -->
-    <div id="cancel-view">
-      <h3>Cancelar Reserva</h3>
-      <div class="cancel-card-info" data-cy="info-reserva">
-        <strong>Reserva:</strong> RES-105<br />
-        <strong>Paciente:</strong> Juan<br />
-        <strong>Turno:</strong> 20/04/26 - 9:00 hs
-      </div>
+            // Validaciones y confirmación de baja
+            formCancel.addEventListener("submit", () => {
+                const email = inputEmail.value.trim();
+                msgError.style.display = "none";
+                msgSuccess.style.display = "none";
 
-      <form id="form-cancel" onsubmit="return false;">
-        <label for="input-email">Confirme su correo para procesar la baja:</label>
-        <input 
-          type="email" 
-          id="input-email" 
-          data-cy="email-input" 
-          placeholder="ej: juan@gmail.com" 
-        />
+                // 1. Validación de campo vacío
+                if (!email) {
+                    msgError.textContent = "El correo electrónico es obligatorio para cancelar la reserva.";
+                    msgError.style.display = "block";
+                    return;
+                }
 
-        <button type="submit" id="btn-submit-cancel" data-cy="btn-confirmar-baja" class="btn-cancelar-final">
-          Confirmar Cancelación
-        </button>
-      </form>
+                // 2. Validación de formato
+                if (!email.includes("@") || !email.includes(".")) {
+                    msgError.textContent = "Ingrese un formato de correo válido (ej: usuario@correo.com).";
+                    msgError.style.display = "block";
+                    return;
+                }
 
-      <!-- Mensajes de respuesta con data-cy -->
-      <div id="msg-error" data-cy="error-mensaje" class="error-box"></div>
-      <div id="msg-success" data-cy="confirmacion-cancelacion" class="success-box"></div>
-    </div>
-  </div>
-
-  <script>
-    const emailView = document.getElementById('email-view');
-    const cancelView = document.getElementById('cancel-view');
-    const linkCancelar = document.getElementById('link-cancelar');
-    const formCancel = document.getElementById('form-cancel');
-    const inputEmail = document.getElementById('input-email');
-    const msgError = document.getElementById('msg-error');
-    const msgSuccess = document.getElementById('msg-success');
-
-    // Al hacer clic en "aquí", pasamos a la pantalla de cancelación
-    linkCancelar.addEventListener('click', () => {
-      emailView.style.display = 'none';
-      cancelView.style.display = 'block';
-    });
-
-    // Validaciones y confirmación de baja
-    formCancel.addEventListener('submit', () => {
-      const email = inputEmail.value.trim();
-      msgError.style.display = 'none';
-      msgSuccess.style.display = 'none';
-
-      // 1. Validación de campo vacío
-      if (!email) {
-        msgError.textContent = 'El correo electrónico es obligatorio para cancelar la reserva.';
-        msgError.style.display = 'block';
-        return;
-      }
-
-      // 2. Validación de formato
-      if (!email.includes('@') || !email.includes('.')) {
-        msgError.textContent = 'Ingrese un formato de correo válido (ej: usuario@correo.com).';
-        msgError.style.display = 'block';
-        return;
-      }
-
-      // 3. Confirmación exitosa
-      msgSuccess.textContent = 'La reserva RES-105 ha sido cancelada. Se envió el correo de confirmación de baja a ' + email + '.';
-      msgSuccess.style.display = 'block';
-      formCancel.style.display = 'none';
-    });
-  </script>
-</body>
+                // 3. Confirmación exitosa
+                msgSuccess.textContent =
+                    "La reserva RES-105 ha sido cancelada. Se envió el correo de confirmación de baja a " + email + ".";
+                msgSuccess.style.display = "block";
+                formCancel.style.display = "none";
+            });
+        </script>
+    </body>
 </html>

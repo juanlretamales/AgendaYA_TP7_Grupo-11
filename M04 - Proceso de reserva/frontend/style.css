@@ -126,7 +126,10 @@ button {
     cursor: pointer;
     margin-top: 0;
     border-radius: 0;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s;
     letter-spacing: 0.02em;
 }
 
@@ -183,7 +186,9 @@ button {
     cursor: pointer;
     margin-top: 0;
     width: auto;
-    transition: background 0.2s, color 0.2s;
+    transition:
+        background 0.2s,
+        color 0.2s;
 }
 
 .tab-btn:hover {
@@ -240,7 +245,9 @@ button {
     cursor: pointer;
     margin-top: 0;
     width: auto;
-    transition: background 0.2s, color 0.2s;
+    transition:
+        background 0.2s,
+        color 0.2s;
 }
 
 .var-btn:hover {
@@ -338,7 +345,8 @@ button {
 }
 
 /* Contenedor oscuro que cubre toda la pantalla */
-[data-cy="success-modal"], .success-modal {
+[data-cy="success-modal"],
+.success-modal {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -349,7 +357,8 @@ button {
 }
 
 /* Tarjeta blanca centrada geométricamente en el viewport */
-[data-cy="success-modal"] > div, .success-modal-content {
+[data-cy="success-modal"] > div,
+.success-modal-content {
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;

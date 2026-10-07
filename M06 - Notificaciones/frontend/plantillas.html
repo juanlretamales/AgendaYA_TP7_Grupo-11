@@ -1,99 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AgendaYA - Configuración de Plantillas</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgendaYA - Configuración de Plantillas</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <body>
+        <div class="container">
+            <h1>Configuración de Plantillas de Email</h1>
+            <p class="templates-subtitle">Módulo M06 – US_005 / M06-R04F</p>
 
-<body>
-    <div class="container">
-        <h1>Configuración de Plantillas de Email</h1>
-        <p class="templates-subtitle">Módulo M06 – US_005 / M06-R04F</p>
+            <!-- Fila superior: Selector de tipo + Tipo de evento -->
+            <div class="templates-top-row">
+                <!-- Pestañas de tipo de plantilla -->
+                <div class="template-tabs">
+                    <button data-cy="tab-confirmacion" class="tab-btn active" id="tab-confirmacion">
+                        Confirmación
+                    </button>
+                    <button data-cy="tab-cancelacion" class="tab-btn" id="tab-cancelacion">Cancelación</button>
+                    <button data-cy="tab-recordatorio" class="tab-btn" id="tab-recordatorio">Recordatorio</button>
+                </div>
 
-        <!-- Fila superior: Selector de tipo + Tipo de evento -->
-        <div class="templates-top-row">
+                <!-- Selector de Tipo de Evento -->
+                <div class="event-type-wrapper">
+                    <label for="event-type-select">Tipo de Evento:</label>
+                    <select data-cy="event-type-select" id="event-type-select">
+                        <option value="Ortodoncia">Ortodoncia</option>
+                        <option value="Consulta General">Consulta General</option>
+                        <option value="Seguimiento">Seguimiento</option>
+                        <option value="Limpieza Dental">Limpieza Dental</option>
+                        <option value="Endodoncia">Endodoncia</option>
+                    </select>
+                </div>
+            </div>
 
-            <!-- Pestañas de tipo de plantilla -->
-            <div class="template-tabs">
-                <button data-cy="tab-confirmacion" class="tab-btn active" id="tab-confirmacion">
-                    Confirmación
+            <!-- Botones de variables dinámicas -->
+            <div class="variables-section">
+                <span class="variables-label">Insertar variable:</span>
+                <div class="variable-buttons">
+                    <button data-cy="btn-var-nombre-invitado" class="var-btn" type="button">[Nombre_Invitado]</button>
+                    <button data-cy="btn-var-nombre-prof" class="var-btn" type="button">[Nombre_Prof]</button>
+                    <button data-cy="btn-var-fecha" class="var-btn" type="button">[Fecha]</button>
+                    <button data-cy="btn-var-hora" class="var-btn" type="button">[Hora]</button>
+                </div>
+            </div>
+
+            <!-- Área de edición de texto -->
+            <div class="textarea-wrapper">
+                <textarea
+                    data-cy="template-textarea"
+                    id="template-textarea"
+                    placeholder="Escriba aquí el cuerpo de la plantilla de email..."
+                    maxlength="2000"
+                ></textarea>
+                <div class="char-counter-row">
+                    <span data-cy="char-counter" id="char-counter">0 / 2000 caracteres</span>
+                </div>
+            </div>
+
+            <!-- Mensaje de error de validación -->
+            <div data-cy="template-error" id="template-error" class="error" style="display: none"></div>
+
+            <!-- Botones de acción -->
+            <div class="template-actions">
+                <button data-cy="btn-reset-template" class="btn-secondary" type="button" id="btn-reset-template">
+                    Restablecer
                 </button>
-                <button data-cy="tab-cancelacion" class="tab-btn" id="tab-cancelacion">
-                    Cancelación
-                </button>
-                <button data-cy="tab-recordatorio" class="tab-btn" id="tab-recordatorio">
-                    Recordatorio
+                <button data-cy="btn-save-template" class="btn-primary" type="button" id="btn-save-template">
+                    Guardar Cambios
                 </button>
             </div>
 
-            <!-- Selector de Tipo de Evento -->
-            <div class="event-type-wrapper">
-                <label for="event-type-select">Tipo de Evento:</label>
-                <select data-cy="event-type-select" id="event-type-select">
-                    <option value="Ortodoncia">Ortodoncia</option>
-                    <option value="Consulta General">Consulta General</option>
-                    <option value="Seguimiento">Seguimiento</option>
-                    <option value="Limpieza Dental">Limpieza Dental</option>
-                    <option value="Endodoncia">Endodoncia</option>
-                </select>
+            <!-- Modal / alerta de éxito -->
+            <div data-cy="success-modal" id="success-modal" class="success-modal" style="display: none">
+                <div class="success-modal-content">
+                    <span class="success-icon">✔️</span>
+                    <p data-cy="success-message" id="success-message">Cambios guardados con éxito</p>
+                    <button class="btn-close-modal" id="btn-close-modal" type="button">Cerrar</button>
+                </div>
             </div>
         </div>
 
-        <!-- Botones de variables dinámicas -->
-        <div class="variables-section">
-            <span class="variables-label">Insertar variable:</span>
-            <div class="variable-buttons">
-                <button data-cy="btn-var-nombre-invitado" class="var-btn" type="button">
-                    [Nombre_Invitado]
-                </button>
-                <button data-cy="btn-var-nombre-prof" class="var-btn" type="button">
-                    [Nombre_Prof]
-                </button>
-                <button data-cy="btn-var-fecha" class="var-btn" type="button">
-                    [Fecha]
-                </button>
-                <button data-cy="btn-var-hora" class="var-btn" type="button">
-                    [Hora]
-                </button>
-            </div>
-        </div>
-
-        <!-- Área de edición de texto -->
-        <div class="textarea-wrapper">
-            <textarea data-cy="template-textarea" id="template-textarea"
-                placeholder="Escriba aquí el cuerpo de la plantilla de email..." maxlength="2000"></textarea>
-            <div class="char-counter-row">
-                <span data-cy="char-counter" id="char-counter">0 / 2000 caracteres</span>
-            </div>
-        </div>
-
-        <!-- Mensaje de error de validación -->
-        <div data-cy="template-error" id="template-error" class="error" style="display: none;"></div>
-
-        <!-- Botones de acción -->
-        <div class="template-actions">
-            <button data-cy="btn-reset-template" class="btn-secondary" type="button" id="btn-reset-template">
-                Restablecer
-            </button>
-            <button data-cy="btn-save-template" class="btn-primary" type="button" id="btn-save-template">
-                Guardar Cambios
-            </button>
-        </div>
-
-        <!-- Modal / alerta de éxito -->
-        <div data-cy="success-modal" id="success-modal" class="success-modal" style="display: none;">
-            <div class="success-modal-content">
-                <span class="success-icon">✔️</span>
-                <p data-cy="success-message" id="success-message">Cambios guardados con éxito</p>
-                <button class="btn-close-modal" id="btn-close-modal" type="button">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="../src/plantillas.js"></script>
-</body>
-
+        <script src="../src/plantillas.js"></script>
+    </body>
 </html>
