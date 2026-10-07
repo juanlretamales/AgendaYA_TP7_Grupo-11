@@ -1,0 +1,21 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es2021": true,
+        "jest": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "script"
+    },
+    "rules": {
+        "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+        "no-undef": "error",
+        "eqeqeq": ["error", "always", { "null": "ignore" }],
+        "no-var": "error",
+        "prefer-const": "warn",
+        "no-console": "warn"
+    },
+    "ignorePatterns": ["node_modules/", "cypress/", "**/cypress/**"]
+}

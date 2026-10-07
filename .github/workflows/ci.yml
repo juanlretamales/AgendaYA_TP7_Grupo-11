@@ -1,0 +1,79 @@
+﻿name: CI – AgendaYA TP7
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'hotfix/**'
+
+jobs:
+  ci:
+    name: Lint · Format · Test · Build-check
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout del repositorio ────────────────────────────────────────
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Node.js 20 con caché de npm ───────────────────────────────
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ── 3. Instalación de dependencias ─────────────────────────────────────
+      - name: Instalación de dependencias (npm ci)
+        run: npm ci
+
+      # ── 4. Verificación de Formato (Punto 3 obligatorio) ───────────────────
+      - name: Verificación de Formato – Prettier
+        run: npm run format:check
+
+      # ── 5. Linter / Buenas prácticas (Punto 2 obligatorio) ─────────────────
+      - name: Linter – ESLint
+        run: npm run lint
+
+      # ── 6. Ejecución de Tests Unitarios (Puntos 1 y 5 obligatorios) ────────
+      - name: Tests Unitarios – Jest
+        run: npm test -- --runInBand --ci
+
+      # ── 7. Verificación de Build / Integridad (Punto 4 obligatorio) ────────
+      - name: Verificación de Integridad Estructural del Frontend
+        run: |
+          echo "=== Verificando archivos obligatorios del frontend ==="
+
+          # M04 – Proceso de reserva
+          test -f "M04 - Proceso de reserva/frontend/proceso_reserva.html" \
+            && echo "OK M04 frontend/proceso_reserva.html existe" \
+            || (echo "FALLA M04 frontend/proceso_reserva.html NO encontrado" && exit 1)
+
+          test -f "M04 - Proceso de reserva/src/proceso_reserva.js" \
+            && echo "OK M04 src/proceso_reserva.js existe" \
+            || (echo "FALLA M04 src/proceso_reserva.js NO encontrado" && exit 1)
+
+          # M06 – Notificaciones
+          test -f "M06 - Notificaciones/frontend/plantillas.html" \
+            && echo "OK M06 frontend/plantillas.html existe" \
+            || (echo "FALLA M06 frontend/plantillas.html NO encontrado" && exit 1)
+
+          test -f "M06 - Notificaciones/src/plantillas.js" \
+            && echo "OK M06 src/plantillas.js existe" \
+            || (echo "FALLA M06 src/plantillas.js NO encontrado" && exit 1)
+
+          # Configuraciones raiz
+          test -f "cypress.config.js" \
+            && echo "OK cypress.config.js existe" \
+            || (echo "FALLA cypress.config.js NO encontrado" && exit 1)
+
+          test -f "package.json" \
+            && echo "OK package.json existe" \
+            || (echo "FALLA package.json NO encontrado" && exit 1)
+
+          echo "=== Integridad estructural verificada con exito ==="
