@@ -67,4 +67,17 @@ describe("Confirmación de reserva desde mail M06", () => {
         expect(confirmarReserva(confirmada, referencia)).toBe(false);
         expect(confirmada.setItem).not.toHaveBeenCalled();
     });
+
+    it("debe actualizar y persistir el estado de la reserva a CONFIRMADA en el almacenamiento", () => {
+        // Arrange
+        const reservaPendiente = { ...ultima, estado: "PENDIENTE" };
+        const storageMock = storageCon(JSON.stringify([primera, reservaPendiente]));
+
+        // Act
+        confirmarReserva(storageMock, referencia);
+
+        // Assert
+        const reservasGuardadas = JSON.parse(storageMock.getItem(null));
+        expect(reservasGuardadas[1].estado).toBe("CONFIRMADA");
+    });
 });
