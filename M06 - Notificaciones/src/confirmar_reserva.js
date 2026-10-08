@@ -22,7 +22,7 @@ function confirmarReserva(storage, referencia) {
     const reserva = buscarReserva(reservas, referencia);
     if (!reserva || reserva.estado !== "PENDIENTE") return false;
     reserva.estado = "CONFIRMADA";
-    // storage.setItem(RESERVAS_KEY, JSON.stringify(reservas)); // DEFECTO INYECTADO: no persiste en storage
+    storage.setItem(RESERVAS_KEY, JSON.stringify(reservas));
     return true;
 }
 
